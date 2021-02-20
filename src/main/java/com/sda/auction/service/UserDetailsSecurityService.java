@@ -24,6 +24,7 @@ public class UserDetailsSecurityService implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
+    //implementarea noastra pe care io dam Springului (cand vrea sa faca logarea , o face pe baza datelor bagate de noi)
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Optional<User> optionalUser = userRepository.findByEmail(email);
