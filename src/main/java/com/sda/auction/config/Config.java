@@ -8,6 +8,7 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 @Configuration
 public class Config {
 
+//    this bean will set the path to our html
     @Bean
     public ITemplateResolver templateResolver() {
         SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();

@@ -3,6 +3,7 @@ package com.sda.auction.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity
@@ -19,4 +20,7 @@ public class User {
 
     @ManyToOne(cascade = CascadeType.ALL)
     private Role role;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "seller")
+    private List<Product> productList;
 }

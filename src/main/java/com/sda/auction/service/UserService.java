@@ -40,14 +40,12 @@ public class UserService {
     }
 
     private void assignRolesTo(User user, UserDto userDto) {
-
         Optional<Role> optionalRole;
         if (userDto.getIsAdmin()){
             optionalRole = roleRepository.findByName("ROLE_ADMIN");
         }else{
             optionalRole = roleRepository.findByName("ROLE_PARTICIPANT");
         }
-
         if (optionalRole.isPresent()){
             Role role = optionalRole.get();
             user.setRole(role);
