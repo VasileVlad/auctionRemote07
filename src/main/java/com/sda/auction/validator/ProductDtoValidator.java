@@ -52,10 +52,8 @@ public class ProductDtoValidator {
         return true;
     }
 
-
     private void validateStartingPrice(String startingPrice, BindingResult bindingResult) {
         validateFieldAsPositiveInteger("startingPrice", startingPrice, bindingResult);
-
     }
 
     private void validateMinimumBidStep(String minimumBidStep, BindingResult bindingResult) {

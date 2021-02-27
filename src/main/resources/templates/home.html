@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Home page</title>
 
     <link rel="stylesheet" href="/aroma-template/vendors/bootstrap/bootstrap.min.css">
     <link rel="stylesheet" href="/aroma-template/vendors/fontawesome/css/all.min.css">
@@ -71,9 +71,8 @@
                     </div>
                     <div class="card-body">
                         <p th:text="${product.category}"></p>
-                        <h4 class="card-product__title"><a href="/viewProduct" th:text="${product.name}"></a>
-                        </h4>
-                        <p class="card-product__price" th:text="'$'+${product.startingPrice}"></p>
+                        <h4 class="card-product__title"><a th:href="'/viewProduct/'+${product.id}" th:text="${product.name}"></a></h4>
+                        <p class="card-product__price" th:text="'$'+${product.currentPrice}"></p>
                     </div>
                 </div>
             </div>
