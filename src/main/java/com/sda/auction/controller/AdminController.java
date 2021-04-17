@@ -1,7 +1,9 @@
 package com.sda.auction.controller;
 
 import com.sda.auction.dto.ProductDto;
+import com.sda.auction.dto.UserHeaderDto;
 import com.sda.auction.service.ProductService;
+import com.sda.auction.service.UserService;
 import com.sda.auction.validator.ProductDtoValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -18,16 +20,20 @@ public class AdminController {
 
     private ProductDtoValidator productDtoValidator;
     private ProductService productService;
+    private final UserService userService;
 
     @Autowired
-    public AdminController(ProductDtoValidator productDtoValidator,ProductService productService) {
+    public AdminController(ProductDtoValidator productDtoValidator,ProductService productService, UserService userService) {
         this.productDtoValidator = productDtoValidator;
         this.productService = productService;
+        this.userService = userService;
     }
 
     @GetMapping("/addProduct")
-    public String getAddProduct(Model model){
+    public String getAddProduct(Model model, Authentication authentication){
         model.addAttribute("productDto", new ProductDto());
+        UserHeaderDto userHeaderDto = userService.getUserHeaderDto(authentication.getName());
+        model.addAttribute("userHeaderDto", userHeaderDto);
         return "addProduct";
     }
 

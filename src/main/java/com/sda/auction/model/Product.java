@@ -22,12 +22,16 @@ public class Product {
     private LocalDateTime startBiddingTime;
     private LocalDateTime endBiddingTime;
 
+
     @Lob
     private byte[] image;
 
     @ManyToOne(cascade = CascadeType.ALL)
     private User seller;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product", fetch = FetchType.EAGER)
     private List<Bid> bidList;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    private User winner;
 }

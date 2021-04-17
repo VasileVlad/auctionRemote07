@@ -26,4 +26,7 @@ public class User {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Bid> bidList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "winner")
+    private List<Product> wonProductList;
 }

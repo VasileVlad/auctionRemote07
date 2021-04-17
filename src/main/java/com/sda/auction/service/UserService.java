@@ -1,6 +1,7 @@
 package com.sda.auction.service;
 
 import com.sda.auction.dto.UserDto;
+import com.sda.auction.dto.UserHeaderDto;
 import com.sda.auction.mapper.UserMapper;
 import com.sda.auction.model.Role;
 import com.sda.auction.model.User;
@@ -50,5 +51,13 @@ public class UserService {
             Role role = optionalRole.get();
             user.setRole(role);
         }
+    }
+
+    public UserHeaderDto getUserHeaderDto(String loggedInUserEmail) {
+        Optional<User> optionalUser = userRepository.findByEmail(loggedInUserEmail);
+        if (optionalUser.isPresent()){
+            return userMapper.map(optionalUser.get());
+        }
+        throw new RuntimeException("Invalid user email!");
     }
 }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
@@ -34,23 +35,19 @@
 
                         <li class="nav-item active"><a class="nav-link" href="/home">Home</a></li>
 
-                        <li class="nav-item"><a href="/myBids" class="nav-link">My Bids</a></li>
+                        <li class="nav-item" sec:authorize="hasRole('PARTICIPANT')">
+                            <a href="/myBids" class="nav-link">My Bids</a></li>
 
-                        <li class="nav-item"><a href="/addProduct" class="nav-link">Add Product</a></li>
+                        <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                            <a href="/addProduct" class="nav-link">Add Product</a></li>
 
-                        <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
-
-                        <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+                        <li class="nav-item" sec:authorize="isAnonymous()">
+                            <a class="nav-link"href="/register">Register</a></li>
                     </ul>
 
-                    <ul class="nav-shop">
-                        <li class="nav-item">
-                            <button><i class="ti-search"></i></button>
-                        </li>
-                        <li class="nav-item">
-                            <button><i class="ti-shopping-cart"></i><span class="nav-shop__circle">3</span></button>
-                        </li>
-                        <li class="nav-item"><a class="button button-header" href="#">Buy Now</a></li>
+                    <ul class="nav-shop" sec:authorize="isAuthenticated()">
+                        <li><p>Hello, <span th:text="${userHeaderDto.firstName}"></span></p></li>
+                        <li class="nav-item"><a class="button button-header" href="/logout">Logout</a></li>
                     </ul>
                 </div>
             </div>
@@ -68,28 +65,44 @@
             <div class="col-lg-5 offset-lg-1">
                 <div class="s_product_text">
                     <h3 th:text="${product.name}"></h3>
-                    <h2 th:text="'$'+${product.currentPrice}"></h2>
+                    <h2 th:text="'Current price $'+${product.currentPrice}"></h2>
                     <ul class="list">
                         <li><a class="active" href="#">
                             <span>Category</span>
                             <span th:text="' : '+${product.category}"></span></a></li>
+
                         <li><a href="#"><span>Starting Price</span>
                             <span th:text="' : $'+${product.startingPrice}"></span></a></li>
+
+                        <li><a href="#"><span>Auction ends at: </span>
+                            <span th:text="' : $'+${product.endBiddingTime}"></span></a></li>
+
+                        <li><a href="#"><span>Your maximum bid: </span>
+                            <span th:text="' : '+${product.getUserMaximumBid}"></span></a></li>
                     </ul>
                     <p th:text="${product.description}"></p>
+
 <!--                    <p class="error-message"-->
 <!--                       th:each="error: ${#fields.errors('generic')}"-->
 <!--                       th:text="${error}"></p>-->
-                    <div class="product_count">
+
+                    <div class="product_count" th:if="${product.userMaximumBid != product.currentPrice && !product.winnerAssigned}">
                         <form th:action="@{/viewProduct/{id}(id=${product.id})}" method="post" th:object="${bidDto}">
                             <label for="qty">Your bid value:</label>
-                            <input type="text" name="qty" id="qty" size="2" maxlength="12"
-                                   class="input-text qty" th:field="*{value}">
+                            <input type="text" id="qty" size="2" maxlength="12" class="input-text" th:field="*{value}">
                             <input class="bid-button" type="submit" value="Place Bid">
                             <p class="error-message"
                                th:each="error: ${#fields.errors('value')}"
                                th:text="${error}"></p>
                         </form>
+                    </div>
+
+                    <div class="product_count" th:if="${product.userMaximumBid == product.currentPrice && !product.winnerAssigned}">
+                        <p>You are currently winning the auction for this product!</p>
+                    </div>
+
+                    <div class="product_count" th:if="${product.winnerAssigned}">
+                        <p>The auction for this product is over!</p>
                     </div>
                 </div>
             </div>

@@ -32,23 +32,22 @@
                 </button>
                 <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
                     <ul class="nav navbar-nav menu_nav ml-auto mr-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="/home">Home</a></li>
 
-                        <li class="nav-item" sec:authorize="hasRole('PARTICIPANT')">
-                            <a href="/myBids" class="nav-link">My Bids</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/home">Home</a></li>
+
+                        <li class="nav-item active" sec:authorize="hasRole('PARTICIPANT')">
+                            <a href="/myBids"class="nav-link">My Bids</a></li>
 
                         <li class="nav-item" sec:authorize="hasRole('ADMIN')">
                             <a href="/addProduct" class="nav-link">Add Product</a></li>
 
                         <li class="nav-item" sec:authorize="isAnonymous()">
-                            <a class="nav-link" href="/register">Register</a></li>
+                            <a class="nav-link"href="/register">Register</a></li>
+
                     </ul>
 
                     <ul class="nav-shop" sec:authorize="isAuthenticated()">
-                        <li>
-                            <p>Hello, <span th:text="${userHeaderDto.firstName}"></span></p>
-                        </li>
+                        <li><p>Hello, <span th:text="${userHeaderDto.firstName}"></span></p></li>
                         <li class="nav-item"><a class="button button-header" href="/logout">Logout</a></li>
                     </ul>
                 </div>
@@ -74,7 +73,7 @@
                         <p th:text="${product.category}"></p>
                         <h4 class="card-product__title"><a th:href="'/viewProduct/'+${product.id}"
                                                            th:text="${product.name}"></a></h4>
-                        <p class="card-product__price" th:text="'Current price : $'+${product.currentPrice}"></p>
+                        <p class="card-product__price" th:text="'$'+${product.currentPrice}"></p>
                     </div>
                 </div>
             </div>

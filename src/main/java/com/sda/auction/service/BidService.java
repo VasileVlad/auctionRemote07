@@ -11,6 +11,9 @@ import com.sda.auction.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -35,6 +38,22 @@ public class BidService {
         User user = getUser(userEmail);
         Bid bid = bidMapper.map(bidDto, product, user);
         bidRepository.save(bid);
+    }
+
+    public void assignWinners() {
+        List<Product> expiredAndUnassignedProductList = productRepository.findAllExpiredAndUnassigned(LocalDateTime.now());
+        for (Product product : expiredAndUnassignedProductList){
+            Optional<Bid> optionalMaxBid = product.getBidList()
+                    .stream()
+                    .max(Comparator.comparing(Bid::getValue));
+            if (!optionalMaxBid.isPresent()){
+                continue;
+            }
+            User winner = optionalMaxBid.get().getUser();
+            product.setWinner(winner);
+            System.out.println("Assigning " + winner.getEmail() + " as winner for " + product.getName());
+            productRepository.save(product);
+        }
     }
 
     private User getUser(String userEmail) {
